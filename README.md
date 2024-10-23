@@ -14,6 +14,8 @@
 <p align="center">다음은 컨텐츠 예시입니다. 너무 많은 내용은 읽기 어렵습니다. 필요한 부분만을 사용하세요.</p>
 
 ---
+## 기능 설명
+[스프링부트 어노테이션 설명](https://github.com/HSLee1013/customerqna/blob/master/src/main/java/kr/co/greenart/web/README.md)
 
 <p align="center">
   <h2>Built With</h2>
