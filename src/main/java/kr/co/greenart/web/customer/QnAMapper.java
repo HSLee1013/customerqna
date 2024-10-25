@@ -16,7 +16,7 @@ public interface QnAMapper {
 	@Select("SELECT article_id, title, username, is_secure FROM customerqna where is_secure = 0")
 	void q3_1();
 
-	@Select("SELECT title, content, username FROM customerqna where atricle_id = #{article_id}")
+	@Select("SELECT title, content, username FROM customerqna where article_id = #{article_id}")
 	void q4(int article_id);
 
 	@Select("SELECT is_secure FROM customerqna WHERE article_id = #{article_id}")

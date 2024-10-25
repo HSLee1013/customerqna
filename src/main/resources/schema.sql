@@ -31,3 +31,7 @@ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 is_secure bit DEFAULT 0,
 is_deleted bit DEFAULT 0
 );
+
+INSERT INTO customerqna (title, content, username, password, is_secure) VALUES ('제목1', '내용1', '유저1', 'asdf', 1);
+INSERT INTO customerqna (title, content, username, password) VALUES ('제목2', '내용2', '유저2', 'aa');
+INSERT INTO customerqna (title, content, username, password) VALUES ('제목3', '내용3', '유저3', 'df');
