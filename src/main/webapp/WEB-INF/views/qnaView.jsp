@@ -1,3 +1,6 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="kr.co.greenart.web.customer.qna.QNA"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,11 +17,13 @@ body {
 }
 
 .container {
-	width: 70%;
+	min-width: 1200px;
+	max-width: 1200px;
 	background-color: white;
 	padding: 30px;
 	margin: 0 auto;
-	border-radius: 8px;
+	border: 2px solid limegreen;
+	border-radius: 10px;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -31,7 +36,8 @@ header {
 h1 {
 	font-size: 24px;
 	color: #333;
-	margin-bottom: 5px;
+	margin-top: 0px;
+	margin-bottom: 20px;
 }
 
 .meta {
@@ -52,6 +58,7 @@ h1 {
 
 .content p {
 	margin-bottom: 15px;
+	word-break: break-all;
 }
 
 footer {
@@ -72,8 +79,17 @@ footer {
 			<h1>${ qna.title }</h1>
 			<div class="meta">
 				<p>작성자: ${ qna.username }</p>
+				<%
+				QNA qna = (QNA) request.getAttribute("qna");
+				LocalDateTime createdAt = qna.getCreatedAt();
+
+				DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+				String formatDate = createdAt.format(dateTimeFormatter);
+				
+				pageContext.setAttribute("formatData", formatDate);
+				%>
+				<p>작성일: ${ formatData }</p>
 				<p>조회수: ${ qna.views }</p>
-				<p>작성일: ${ qna.createdAt }</p>
 			</div>
 		</header>
 

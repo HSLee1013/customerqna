@@ -15,7 +15,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 @Mapper
 public interface QNA_Mapper {
-	@Insert("INSERT INTO customerqna (title, content, username, password) VALUES (#{title}, #{content}, #{username}, #{password})")
+	@Insert("INSERT INTO customerqna (title, content, username, password, is_secure) VALUES (#{title}, #{content}, #{username}, #{password}, #{secure})")
 //	@SelectKey(statement = "SELECT LAST_INSERT_ID()", keyColumn = "article_id", keyProperty = "articleId", resultType = Integer.class, before = false)
 	@Options(useGeneratedKeys = true, keyProperty = "articleId")
 	int save(QNA qna);
@@ -31,6 +31,7 @@ public interface QNA_Mapper {
 					,@Result(column = "content", property = "content")
 					,@Result(column = "username", property = "username")
 					,@Result(column = "views", property = "views")
+					,@Result(column = "created_at", property = "createdAt")
 					,@Result(column = "is_secure", property = "secure")
 			})
 	List<QNA> findAll(MyOrder order, int pageSize, int offset, String search);
@@ -44,7 +45,7 @@ public interface QNA_Mapper {
 	List<QNA> findBySecureIsFalse(int pageSize, int offset);
 
 	// TODO 구현
-	@Select("SELECT * FROM customerqna where article_id = #{articleId}")
+	@Select("SELECT * FROM customerqna WHERE article_id = #{articleId}")
 	@Results(id = "qnaMapping",
 			value = {
 			@Result(column = "article_id", property = "articleId")
@@ -60,6 +61,9 @@ public interface QNA_Mapper {
 			}
 	)
 	QNA findById(Integer articleId);
+	
+	@Select("SELECT count(*) FROM customerqna WHERE article_id = #{articleId} AND password = #{password}")
+	int chkPassword(Integer articleId, String password);
 
 	@Select("SELECT is_secure FROM customerqna WHERE article_id = #{articleId}")
 	int findSecureByPk(int articleId);
@@ -72,7 +76,7 @@ public interface QNA_Mapper {
 	class SQLProvider {
 		public String select(MyOrder order, int pageSize, int offset, String search) {
 			return new SQL()
-					.SELECT("article_id, title, content, username, views, is_secure")
+					.SELECT("article_id, title, content, username, views, created_at, is_secure")
 					.FROM("customerqna")
 					.WHERE(search)
 					.ORDER_BY(order.getArticleOrder())

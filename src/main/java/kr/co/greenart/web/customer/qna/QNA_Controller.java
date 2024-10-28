@@ -3,7 +3,6 @@ package kr.co.greenart.web.customer.qna;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -22,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class QNA_Controller {
 	@Autowired
 	private QNA_Service service;
+
+	private final int pageSize = 5;
 
 	@GetMapping("/qna")
 	public String qna(
@@ -40,6 +43,9 @@ public class QNA_Controller {
 		int count = service.count(searchQuery);
 
 		int totalPage = (count + page.getPageSize() - 1) / page.getPageSize();
+		int pageStart = pageNum / pageSize * pageSize + 1;
+		int pageEnd = pageStart - 1
+				+ (pageStart == (totalPage - 1) / pageSize * pageSize + 1 ? totalPage % pageSize : pageSize);
 
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("totalPage", totalPage);
@@ -49,6 +55,8 @@ public class QNA_Controller {
 		model.addAttribute("size", size);
 		model.addAttribute("search", search);
 		model.addAttribute("searchType", searchType);
+		model.addAttribute("start", pageNum / pageSize * pageSize + 1);
+		model.addAttribute("end", pageEnd);
 		return "qna";
 	}
 
@@ -74,5 +82,19 @@ public class QNA_Controller {
 		model.addAttribute("qna", qna);
 
 		return "qnaView";
+	}
+
+	@PostMapping("/qna/{id}")
+	public String passwordArticle(@PathVariable Integer id, @RequestParam String password, Model model,HttpSession session) {
+		session.setAttribute(id+"", true);
+		if((Boolean)session.getAttribute(id+"")) {
+			// TODO 세션에 넣고 세션 체크해라
+		}
+		if (service.chkPassword(id, password)) {
+			return "redirect:/qna/" + id;
+		} else {
+			model.addAttribute("message", "비밀번호가 틀렸습니다.");
+			return "secure";
+		}
 	}
 }

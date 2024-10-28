@@ -1,118 +1,131 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<!DOCTYPE html>
-	<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title>글 작성</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				background-color: #f9f9f9;
-				display: flex;
-				justify-content: center;
-				/* 수평 가운데 정렬 */
-				align-items: center;
-				/* 수직 가운데 정렬 */
-				height: 100vh;
-				/* 화면 전체 높이 사용 */
-				margin: 0;
-			}
+<head>
+<meta charset="UTF-8">
+<title>글 작성</title>
+<style>
+body {
+	font-family: 'Nanum Gothic', sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 20px;
+}
 
-			.container {
-				background-color: white;
-				padding: 20px;
-				border-radius: 8px;
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-				width: 400px;
-				/* 고정 너비 */
-			}
+.container {
+	min-width: 1200px;
+	max-width: 1200px;
+	background-color: white;
+	padding: 30px;
+	margin: 0 auto;
+	border: 2px solid limegreen;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-			h1 {
-				text-align: center;
-				color: #4CAF50;
-				/* 제목 색상 */
-			}
+h1 {
+	text-align: center;
+	color: #4CAF50;
+}
 
-			p {
-				margin: 10px 0 5px;
-				/* 위쪽 여백 */
-			}
+p {
+	margin: 10px 0 5px;
+}
 
-			input[type="text"],
-			input[type="password"],
-			textarea {
-				width: 100%;
-				/* 전체 너비 사용 */
-				padding: 10px;
-				/* 내부 여백 */
-				border: 1px solid #ccc;
-				/* 테두리 색상 */
-				border-radius: 4px;
-				/* 모서리 둥글게 */
-				box-sizing: border-box;
-				/* 패딩 포함 전체 너비 계산 */
-			}
+input[type="text"], input[type="password"], textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
 
-			input[type="submit"], input[type="button"] {
-				background-color: #4CAF50;
-				/* 버튼 배경색 */
-				color: white;
-				/* 버튼 글자 색상 */
-				padding: 10px;
-				/* 버튼 내부 여백 */
-				border: none;
-				/* 테두리 없음 */
-				border-radius: 4px;
-				/* 모서리 둥글게 */
-				cursor: pointer;
-				/* 포인터 커서 */
-				width: 100%;
-				/* 전체 너비 사용 */
-				font-size: 16px;
-				/* 글자 크기 */
-				margin-top: 20px;
-				width: 45%;
-			}
+input[type="submit"], input[type="button"] {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 100px;
+	font-size: 16px;
+	margin-top: 20px;
+	margin-right: 5px;
+}
 
-			input[type="submit"]:hover, input[type="button"]:hover {
-				background-color: #45a049;
-				/* 호버 시 배경색 변화 */
-			}
-			
-			.submitContainer{
-				display: flex;
-				justify-content: space-around;
-			}
-		</style>
-	</head>
+input[type="submit"]:hover, input[type="button"]:hover {
+	background-color: #45a049;
+	/* 호버 시 배경색 변화 */
+}
 
-	<body>
-		<div class="container">
-			<h1>게시글 작성</h1>
-			<form method="post">
-				<p>제목</p>
-				<input type="text" name="title" required>
-				<p>내용</p>
-				<textarea name="content" cols="30" rows="10" required></textarea>
-				<p>아이디</p>
-				<input type="text" name="username" required>
-				<p>비밀번호</p>
-				<input type="password" name="password" required><br>
-				<div class="submitContainer">
-					<input type="button" value="취소" onclick="location.href='/qna'">
-					<input type="submit" value="작성하기">
+.input-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.id-container, .pw-container {
+	width: 47%;
+}
+
+.secret-container {
+	text-align: center;
+	margin-right: 5px;
+}
+
+.secret-container input {
+    margin-top: 12px;
+    scale: 2.5;
+}
+
+.submitContainer {
+	text-align: right;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<h1>게시글 쓰기</h1>
+		<form method="post">
+			<p>제목</p>
+			<input type="text" name="title" required>
+			<div class="input-container">
+				<div class="id-container">
+					<p>아이디</p>
+					<input type="text" name="username" required>
 				</div>
-			</form>
-		</div>
-	</body>
-	<script>
+				<div class="pw-container">
+					<p>비밀번호</p>
+					<input type="password" name="password" required>
+				</div>
+				<div class="secret-container">
+					<p>비밀글</p>
+					<input type="checkbox" name="secure">
+				</div>
+			</div>
+			<p>내용</p>
+			<textarea name="content" rows="33" style="resize: none;" required></textarea>
+			<div class="submitContainer">
+				<input type="button" value="취소" onclick="location.href='/qna'">
+				<input type="submit" value="등록">
+			</div>
+		</form>
+	</div>
+</body>
+<script>
 		const form = document.querySelector("form");
 
 		form.addEventListener("submit", function (e) {
 			e.preventDefault();
 			// fetch form
 			const formdata = new FormData(form);
+			if(formdata.has("secure")){
+				formdata.delete("secure");
+				formdata.append("secure",true);
+			}else{
+				formdata.append("secure",false);
+			}
 			const qna = Object.fromEntries(formdata);
 			const json = JSON.stringify(qna);
 			console.log(json);
@@ -136,4 +149,4 @@
 
 	</script>
 
-	</html>
+</html>

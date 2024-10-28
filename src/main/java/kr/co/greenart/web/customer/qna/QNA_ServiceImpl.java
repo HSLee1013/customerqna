@@ -58,4 +58,9 @@ public class QNA_ServiceImpl implements QNA_Service {
 		return mapper.findAll(order, pageSize, offset, search);
 	}
 
+	@Override
+	public boolean chkPassword(Integer articleId, String password) {
+		return mapper.chkPassword(articleId, password) == 1;
+	}
+
 }
