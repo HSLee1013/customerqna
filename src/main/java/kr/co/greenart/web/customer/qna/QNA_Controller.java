@@ -156,7 +156,7 @@ public class QNA_Controller {
 			HttpSession session) {
 		if (service.chkPassword(id, password)) {
 			session.setAttribute("modify" + id, "");
-			return "redirect:/qna/modify/" + id;
+			return "redirect:/qna/delete/" + id;
 		} else {
 			model.addAttribute("message", "비밀번호가 틀렸습니다.");
 			return "secure";
