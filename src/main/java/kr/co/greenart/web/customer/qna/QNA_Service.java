@@ -7,11 +7,13 @@ public interface QNA_Service {
 	
 	int count(String search);
 	
-	QNA findById(Integer articleId);
+	QNA findById(Integer articleId, boolean chkSecure);
 
 	List<QNA> findAll(MyOrder order, int pageSize, int offset, String search);
 	
 	boolean chkPassword(Integer articleId, String password);
+	
+	int update(QNA qna);
 	
 /*
 1. 게시글 작성
@@ -28,7 +30,7 @@ public interface QNA_Service {
 
 3. 게시글 수정/삭제
 
-작성 시 입력한 비밀번호로 인증
+작성 시 입력한 비밀번호로 인증 // 함
 수정 이력 저장
 삭제 시 실제 삭제가 아닌 논리 삭제 처리
 

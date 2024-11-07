@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -76,8 +77,11 @@ public class QNA_Controller {
 	}
 
 	@GetMapping("/qna/{id}")
-	public String readArticle(@PathVariable Integer id, Model model) {
-		QNA qna = service.findById(id);
+	public String readArticle(@PathVariable Integer id, Model model, HttpSession session) {
+		boolean chkSecure = false;
+		if (session.getAttribute("read" + id) != null)
+			chkSecure = true;
+		QNA qna = service.findById(id, chkSecure);
 
 		model.addAttribute("qna", qna);
 
@@ -85,13 +89,74 @@ public class QNA_Controller {
 	}
 
 	@PostMapping("/qna/{id}")
-	public String passwordArticle(@PathVariable Integer id, @RequestParam String password, Model model,HttpSession session) {
-		session.setAttribute(id+"", true);
-		if((Boolean)session.getAttribute(id+"")) {
-			// TODO 세션에 넣고 세션 체크해라
-		}
+	public String passwordArticle(@PathVariable Integer id, @RequestParam String password, Model model,
+			HttpSession session) {
 		if (service.chkPassword(id, password)) {
+			session.setAttribute("read" + id, "");
 			return "redirect:/qna/" + id;
+		} else {
+			model.addAttribute("message", "비밀번호가 틀렸습니다.");
+			return "secure";
+		}
+	}
+
+	@GetMapping("/qna/modify/{id}")
+	public String qnaModify(@PathVariable Integer id, Model model, HttpSession session) {
+		if (session.getAttribute("modify" + id) == null) {
+			return "secure";
+		}
+		session.removeAttribute("modify" + id);
+		QNA qna = service.findById(id, true);
+		System.out.println(qna);
+
+		model.addAttribute("qna", qna);
+
+		return "qnaModify";
+	}
+
+	@PostMapping("/qna/modify/{id}")
+	public String passwordModify(@PathVariable Integer id, @RequestParam String password, Model model,
+			HttpSession session) {
+		if (service.chkPassword(id, password)) {
+			session.setAttribute("modify" + id, "");
+			return "redirect:/qna/modify/" + id;
+		} else {
+			model.addAttribute("message", "비밀번호가 틀렸습니다.");
+			return "secure";
+		}
+	}
+
+	@PutMapping("/qna/modify/{id}")
+	public ResponseEntity<?> modifySubmit(@PathVariable Integer id, @RequestBody QNA qna) {
+		qna.setArticleId(id);
+		int rows = service.update(qna);
+		if (rows == 1) {
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.internalServerError().build();
+		}
+	}
+
+	@GetMapping("/qna/delete/{id}")
+	public String qnaDelete(@PathVariable Integer id, Model model, HttpSession session) {
+		if (session.getAttribute("modify" + id) == null) {
+			return "secure";
+		}
+		session.removeAttribute("modify" + id);
+		QNA qna = service.findById(id, true);
+		System.out.println(qna);
+
+		model.addAttribute("qna", qna);
+
+		return "qnaModify";
+	}
+
+	@PostMapping("/qna/delete/{id}")
+	public String passwordDelete(@PathVariable Integer id, @RequestParam String password, Model model,
+			HttpSession session) {
+		if (service.chkPassword(id, password)) {
+			session.setAttribute("modify" + id, "");
+			return "redirect:/qna/modify/" + id;
 		} else {
 			model.addAttribute("message", "비밀번호가 틀렸습니다.");
 			return "secure";

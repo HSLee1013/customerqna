@@ -65,12 +65,27 @@ footer {
 	border-top: 1px solid #e6e6e6;
 	padding-top: 10px;
 	margin-top: 20px;
-	text-align: right;
+	display: flex;
+	justify-content: flex-end;
 }
 
-footer {
-	display: flex;
+button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 100px;
+	font-size: 16px;
+	margin-top: 20px;
+	margin-right: 5px;
 }
+
+button {
+	background-color: #45a049;
+}
+
 </style>
 </head>
 <body>
@@ -98,9 +113,9 @@ footer {
 		</div>
 
 		<footer>
-			<button onclick="">수정</button>
-			<button onclick="">삭제</button>
-			<button onclick="location.href='/qna'">게시판으로</button>
+			<button onclick="location.href='/qna/modify/'+<%= qna.getArticleId() %>">수정</button>
+			<button onclick="location.href='/qna/delete/'+<%= qna.getArticleId() %>">삭제</button>
+			<button onclick="location.href='/qna'">목록</button>
 		</footer>
 	</div>
 

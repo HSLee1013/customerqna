@@ -71,6 +71,9 @@ public interface QNA_Mapper {
 	@Update("UPDATE customerqna SET views = views + 1 WHERE article_id = #{articleId}")
 	int updateCount(int articleId);
 
+	@Update("UPDATE customerqna SET title = #{title}, content = #{content}, is_secure = #{secure} WHERE article_id = #{articleId}")
+	int update(QNA qna);
+	
 //	void updateDelete();
 	
 	class SQLProvider {
@@ -93,4 +96,6 @@ public interface QNA_Mapper {
 					.toString();
 		}
 	}
+
+	
 }

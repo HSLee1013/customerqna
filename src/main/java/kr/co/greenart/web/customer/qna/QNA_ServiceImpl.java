@@ -33,14 +33,14 @@ public class QNA_ServiceImpl implements QNA_Service {
 
 	@Override
 	@Transactional
-	public QNA findById(Integer articleId) {
+	public QNA findById(Integer articleId, boolean chkSecure) {
 		QNA qna = mapper.findById(articleId);
 
 		if (qna == null) {
 			throw new QNA_NotFoundException(articleId);
 		}
 
-		if (qna.getSecure()) {
+		if (qna.getSecure() && !chkSecure) {
 			throw new QNA_isSecure(articleId);
 		}
 
@@ -63,4 +63,8 @@ public class QNA_ServiceImpl implements QNA_Service {
 		return mapper.chkPassword(articleId, password) == 1;
 	}
 
+	@Override
+	public int update(QNA qna) {		
+		return mapper.update(qna);
+	}
 }
