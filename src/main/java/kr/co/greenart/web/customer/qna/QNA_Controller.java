@@ -139,16 +139,7 @@ public class QNA_Controller {
 
 	@GetMapping("/qna/delete/{id}")
 	public String qnaDelete(@PathVariable Integer id, Model model, HttpSession session) {
-		if (session.getAttribute("modify" + id) == null) {
-			return "secure";
-		}
-		session.removeAttribute("modify" + id);
-		QNA qna = service.findById(id, true);
-		System.out.println(qna);
-
-		model.addAttribute("qna", qna);
-
-		return "qnaModify";
+		return "delete";
 	}
 
 	@PostMapping("/qna/delete/{id}")
